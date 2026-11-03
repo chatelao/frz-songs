@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+build/
+node_modules/
+*.pdf
+*.midi
+*.mid
+*.mp3
+*.wav
+*.abc
+test_output*
+/tmp/test*
