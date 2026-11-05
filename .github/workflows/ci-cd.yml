@@ -1,0 +1,107 @@
+name: CI/CD Pipeline & GitHub Pages Deployment
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install System & Build Dependencies
+        run: |
+          chmod +x src/install.sh
+          ./src/install.sh
+
+      - name: Install Test Dependencies
+        run: |
+          chmod +x test/install.sh
+          ./test/install.sh
+
+      - name: Run Build Pipeline & Asset Generation
+        run: |
+          chmod +x src/scripts/build_pipeline.sh
+          ./src/scripts/build_pipeline.sh
+
+      - name: Run Unit Tests
+        run: |
+          python3 -m unittest discover test/unit/
+
+      - name: Run End-to-End Playwright Tests
+        run: |
+          python3 -m unittest discover test/e2e/
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'build/site'
+
+      - name: Package Release Assets
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          mkdir -p build/release_assets
+          cd build
+          zip -r release_assets/all_sheet_music_pdf.zip pdf/
+          zip -r release_assets/all_piano_mp3.zip mp3/
+          zip -r release_assets/all_abc_notation.zip abc/
+          zip -r release_assets/all_midi_files.zip midi/
+          zip -r release_assets/all_lyrics_markdown.zip lyrics/
+          zip -r release_assets/all_lyrics_pdf.zip lyrics_pdf/
+          cd ..
+          zip -r build/release_assets/all_lilypond_sources.zip src/songs/
+          cp build/pdf/*.pdf build/release_assets/
+          cp build/mp3/*.mp3 build/release_assets/
+          cp build/abc/*.abc build/release_assets/
+          cp build/midi/*.midi build/release_assets/ 2>/dev/null || true
+          cp build/midi/*.mid build/release_assets/ 2>/dev/null || true
+          cp build/lyrics/*.md build/release_assets/
+          cp build/lyrics_pdf/*.pdf build/release_assets/
+
+      - name: Publish GitHub Release with Assets
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        with:
+          tag_name: "v1.0.${{ github.run_number }}"
+          name: "Französische Lieder Release v1.0.${{ github.run_number }}"
+          body: "Automated release containing all French songs in all formats (.ly, .pdf, .mp3, .abc, .midi, .md lyrics, lyrics .pdf, and complete song booklet .pdf)."
+          files: build/release_assets/*
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Französische Lieder - Chansons Françaises - Interaktiver Web-Player</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- abcjs library script and style -->
+  <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/dist/abcjs-basic-min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <h1>🎵 Französische Lieder</h1>
+      <p class="subtitle">Chansons françaises - Noten, Audio-Player & Liedtexte</p>
+    </div>
+  </header>
+
+  <main class="app-layout">
+    <!-- Sidebar / Navigation -->
+    <aside class="sidebar">
+      <div class="search-box">
+        <input type="text" id="song-search" placeholder="Chanson suchen..." aria-label="Lied suchen">
+      </div>
+      <div class="catalog-container">
+        <h2>Liederverzeichnis</h2>
+        <ul id="song-list" class="song-list">
+          <!-- Populated dynamically by app.js -->
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <section class="content-area">
+      <!-- Active Song Title Header -->
+      <div class="song-header">
+        <h2 id="current-song-title">Bitte wählen Sie ein Lied aus</h2>
+        <p id="current-song-meta" class="song-meta"></p>
+      </div>
+
+      <!-- Playback and Control Toolbar -->
+      <div class="controls-toolbar">
+        <div class="playback-buttons">
+          <button id="btn-play" class="btn btn-primary" aria-label="Abspielen oder Anhalten">
+            <span class="btn-icon">▶</span> <span class="btn-text">Abspielen</span>
+          </button>
+          <button id="btn-stop" class="btn btn-secondary" aria-label="Wiedergabe stoppen">
+            <span class="btn-icon">⏹</span> <span class="btn-text">Stop</span>
+          </button>
+        </div>
+
+        <div class="tempo-control">
+          <label for="tempo-slider">Tempo:</label>
+          <input type="range" id="tempo-slider" min="50" max="180" value="100" step="5">
+          <span id="tempo-value">100%</span>
+        </div>
+
+        <div class="view-toggle">
+          <button id="toggle-score" class="toggle-btn active" aria-label="Notenansicht">Noten</button>
+          <button id="toggle-lyrics" class="toggle-btn" aria-label="Textansicht">Liedtext</button>
+        </div>
+      </div>
+
+      <!-- Tab View: Sheet Music Score View -->
+      <div id="score-view" class="view-panel active">
+        <div id="paper" class="score-container" aria-label="Notenblatt">
+          <!-- Rendered SVG score by abcjs -->
+        </div>
+      </div>
+
+      <!-- Tab View: Standalone Lyrics View -->
+      <div id="lyrics-view" class="view-panel hidden-panel">
+        <div class="lyrics-container">
+          <div id="lyrics-content" class="lyrics-text">
+            <!-- Rendered lyrics stanzas -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Embedded Audio Synthesizer (MP3 Fallback) -->
+      <div class="audio-player-wrapper">
+        <audio id="mp3-audio" controls preload="none">
+          <source id="mp3-source" src="" type="audio/mpeg">
+          Ihr Browser unterstützt kein Audio-Element.
+        </audio>
+      </div>
+
+      <!-- Download Center -->
+      <div class="downloads-section">
+        <h3>Downloads & Formate</h3>
+        <div class="download-links">
+          <a id="dl-booklet" href="pdf/franzosische_lieder_liederbuch.pdf" class="btn btn-primary" download target="_blank" style="background: #0055a4; color: #ffffff; font-weight: bold; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>📖</span> <span>Gesamtes Liederbuch (PDF)</span>
+          </a>
+          <a id="dl-pdf" href="#" class="btn btn-download" download target="_blank">
+            <span>📄</span> Notenblatt (PDF)
+          </a>
+          <a id="dl-mp3" href="#" class="btn btn-download" download target="_blank">
+            <span>🎹</span> Piano Audio (MP3)
+          </a>
+          <a id="dl-lyrics-pdf" href="#" class="btn btn-download" download target="_blank">
+            <span>📑</span> Liedtext (PDF)
+          </a>
+          <a id="dl-lyrics-md" href="#" class="btn btn-download" download target="_blank">
+            <span>📝</span> Liedtext (Markdown)
+          </a>
+          <a id="dl-abc" href="#" class="btn btn-download" download target="_blank">
+            <span>🎼</span> ABC Notation (.abc)
+          </a>
+          <a id="dl-ly" href="#" class="btn btn-download" download target="_blank">
+            <span>✍️</span> LilyPond Master (.ly)
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Französische Lieder - Chansons Françaises &bull; Open Source Notensätze &amp; Musikbibliothek &bull; Erstellt mit GNU LilyPond &amp; abcjs</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
