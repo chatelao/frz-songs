@@ -73,7 +73,7 @@ class TestWebPlayerE2E(unittest.TestCase):
         self.assertIn("Französische Lieder", title)
 
         song_items = self.page.query_selector_all("#song-list .song-item")
-        self.assertEqual(len(song_items), 10)
+        self.assertEqual(len(song_items), 11)
 
         active_title = self.page.locator("#current-song-title").text_content()
         self.assertIn("Frère Jacques", active_title)

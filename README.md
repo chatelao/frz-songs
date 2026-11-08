@@ -1,6 +1,6 @@
 # Französische Lieder - Chansons Françaises
 
-Willkommen zur Notensammlung **Französische Lieder (Chansons Françaises)** — eine Open-Source-Bibliothek mit 10 ausgewählten französischen Liedern, vom traditionellen Kinderlied über Chansons bis hin zu modernem Pop.
+Willkommen zur Notensammlung **Französische Lieder (Chansons Françaises)** — eine Open-Source-Bibliothek mit 11 ausgewählten Liedern, vom traditionellen Kinderlied über Chansons bis hin zu modernem Pop.
 
 Alle Notensätze werden mit **GNU LilyPond (`.ly`)** gepflegt und automatisch in verschiedene Formate gerendert.
 
@@ -39,6 +39,7 @@ Dieses Repository bietet alle Lieder in einer vollständigen Toolchain und CI/CD
 | 8 | Alors on danse | Stromae | Hoher Bekanntheitsgrad, modernes Vokabular | `08_alors_on_danse.ly` |
 | 9 | Papaoutai | Stromae | Eingängiger Rhythmus, oft im Französischunterricht | `09_papaoutai.ly` |
 | 10 | On écrit sur les murs | Kids United (orig. Demis Roussos) | Ideal für Schulklassen und gemeinsames Singen | `10_on_ecrit_sur_les_murs.ly` |
+| 11 | Bella Ciao (Versione delle Mondine & dei Partigiani) | Tradizionale (Arr. Iller Pattacini 1965 / Roberto Negri 1971) | Historisches italienisches Freiheits- und Arbeitslied | `11_bella_ciao.ly` |
 
 ---
 
