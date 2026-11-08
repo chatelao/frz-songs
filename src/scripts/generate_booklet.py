@@ -131,7 +131,7 @@ def create_cover_page():
     pdf.set_y(ribbon_y + 3)
     pdf.set_font('Helvetica', 'B', 13)
     pdf.set_text_color(255, 245, 220)
-    pdf.cell(0, 12, sanitize_text("10 Französische Klassiker & moderne Hits"), align='C', new_x='LMARGIN', new_y='NEXT')
+    pdf.cell(0, 12, sanitize_text("Ausgewählte Klassiker & moderne Hits"), align='C', new_x='LMARGIN', new_y='NEXT')
 
     # Features List
     pdf.set_y(225)
@@ -200,7 +200,7 @@ def create_toc_pages(song_entries, start_page_num):
 
     pdf.set_font('Helvetica', 'I', 11)
     pdf.set_text_color(110, 110, 110)
-    pdf.cell(0, 7, sanitize_text("Übersicht aller 10 französischen Lieder"), align='C', new_x='LMARGIN', new_y='NEXT')
+    pdf.cell(0, 7, sanitize_text("Übersicht aller Lieder der Sammlung"), align='C', new_x='LMARGIN', new_y='NEXT')
     pdf.ln(4)
 
     pdf.set_line_width(0.4)
@@ -327,8 +327,8 @@ def generate_booklet(output_pdf_path=None):
 
         for page in reader.pages:
             overlay_page = create_page_number_overlay(current_page)
-            page.merge_page(overlay_page)
-            writer.add_page(page)
+            new_page = writer.add_page(page)
+            new_page.merge_page(overlay_page)
             current_page += 1
 
     print(f"    [3/3] Generating Table of Contents at page {current_page}...")
